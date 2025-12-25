@@ -3,11 +3,13 @@ import DataGrid from '../../components/DataGrid';
 import DomesticETFSelector from '../../components/DomesticETFSelector';
 import USAETFSelector from '../../components/USAETFSelector';
 
-const MASTER_API_BASE_URL = 'http://localhost:8000/api/v1/common-code-masters';
-const DETAIL_API_BASE_URL = 'http://localhost:8000/api/v1/common-code-details';
-const EXPERIENCE_LAB_STOCKS_API_BASE_URL = 'http://localhost:8000/api/v1/experience-lab-stocks';
-const DOMESTIC_ETF_API_BASE_URL = 'http://localhost:8000/api/v1/domestic-etfs';
-const USA_ETF_API_BASE_URL = 'http://localhost:8000/api/v1/usa-etfs';
+import { getApiUrl, API_ENDPOINTS } from '../../utils/api';
+
+const MASTER_API_BASE_URL = getApiUrl(API_ENDPOINTS.COMMON_CODE_MASTERS);
+const DETAIL_API_BASE_URL = getApiUrl(API_ENDPOINTS.COMMON_CODE_DETAILS);
+const EXPERIENCE_LAB_STOCKS_API_BASE_URL = getApiUrl(API_ENDPOINTS.EXPERIENCE_LAB_STOCKS);
+const DOMESTIC_ETF_API_BASE_URL = getApiUrl(API_ENDPOINTS.DOMESTIC_ETFS);
+const USA_ETF_API_BASE_URL = getApiUrl(API_ENDPOINTS.USA_ETFS);
 
 function ExperienceLabSettings() {
   const [tabs, setTabs] = useState([]);

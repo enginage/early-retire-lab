@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import DataGrid from '../../components/DataGrid';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1/domestic-etfs';
+import { getApiUrl, API_ENDPOINTS } from '../../utils/api';
+
+const API_BASE_URL = getApiUrl(API_ENDPOINTS.DOMESTIC_ETFS);
 
 function DomesticETF() {
   const [allEtfs, setAllEtfs] = useState([]); // 전체 데이터 (DB에서 한 번만 읽음)

@@ -6,10 +6,12 @@ import FinancialInstitutionSelector from '../../components/FinancialInstitutionS
 import CommonCodeSelector from '../../components/CommonCodeSelector';
 import DataGrid from '../../components/DataGrid';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1/irp-accounts';
-const DETAIL_API_BASE_URL = 'http://localhost:8000/api/v1/irp-account-details';
-const MASTER_API_BASE_URL = 'http://localhost:8000/api/v1/common-code-masters';
-const COMMON_DETAIL_API_BASE_URL = 'http://localhost:8000/api/v1/common-code-details';
+import { getApiUrl, API_ENDPOINTS } from '../../utils/api';
+
+const API_BASE_URL = getApiUrl(API_ENDPOINTS.IRP_ACCOUNTS);
+const DETAIL_API_BASE_URL = getApiUrl(API_ENDPOINTS.IRP_ACCOUNT_DETAILS);
+const MASTER_API_BASE_URL = getApiUrl(API_ENDPOINTS.COMMON_CODE_MASTERS);
+const COMMON_DETAIL_API_BASE_URL = getApiUrl(API_ENDPOINTS.COMMON_CODE_DETAILS);
 
 function IRPAccountManagement() {
   const [accounts, setAccounts] = useState([]);

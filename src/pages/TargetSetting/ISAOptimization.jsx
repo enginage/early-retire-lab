@@ -3,11 +3,13 @@ import DataGrid from '../../components/DataGrid';
 import DomesticETFInput from '../../components/DomesticETFInput';
 import { ensureDomesticETFCache } from '../../components/DomesticETFSelector';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1/isa-accounts';
-const SALE_API_BASE_URL = 'http://localhost:8000/api/v1/isa-account-sales';
-const DIVIDEND_API_BASE_URL = 'http://localhost:8000/api/v1/isa-account-dividends';
-const MASTER_API_BASE_URL = 'http://localhost:8000/api/v1/common-code-masters';
-const COMMON_DETAIL_API_BASE_URL = 'http://localhost:8000/api/v1/common-code-details';
+import { getApiUrl, API_ENDPOINTS } from '../../utils/api';
+
+const API_BASE_URL = getApiUrl(API_ENDPOINTS.ISA_ACCOUNTS);
+const SALE_API_BASE_URL = getApiUrl(API_ENDPOINTS.ISA_ACCOUNT_SALES);
+const DIVIDEND_API_BASE_URL = getApiUrl(API_ENDPOINTS.ISA_ACCOUNT_DIVIDENDS);
+const MASTER_API_BASE_URL = getApiUrl(API_ENDPOINTS.COMMON_CODE_MASTERS);
+const COMMON_DETAIL_API_BASE_URL = getApiUrl(API_ENDPOINTS.COMMON_CODE_DETAILS);
 
 function ISAOptimization() {
   const [accounts, setAccounts] = useState([]);

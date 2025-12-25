@@ -4,7 +4,9 @@ import RatioInput from '../../components/RatioInput';
 import DomesticETFSelector from '../../components/DomesticETFSelector';
 import DataGrid from '../../components/DataGrid';
 
-const DETAIL_API_BASE_URL = 'http://localhost:8000/api/v1/pension-fund-account-details';
+import { getApiUrl, API_ENDPOINTS } from '../../utils/api';
+
+const DETAIL_API_BASE_URL = getApiUrl(API_ENDPOINTS.PENSION_FUND_ACCOUNT_DETAILS);
 
 function PensionFundAccountDetail({ accountId }) {
   const [details, setDetails] = useState([]);
@@ -281,7 +283,7 @@ function PensionFundAccountDetail({ accountId }) {
 
   const handleDownloadTemplate = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/v1/pension-fund-account-details/template/download');
+      const response = await fetch(getApiUrl('/api/v1/pension-fund-account-details/template/download'));
       if (!response.ok) {
         throw new Error('템플릿 다운로드에 실패했습니다.');
       }
@@ -324,7 +326,7 @@ function PensionFundAccountDetail({ accountId }) {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch(`http://localhost:8000/api/v1/pension-fund-account-details/upload/${accountId}`, {
+      const response = await fetch(getApiUrl(`/api/v1/pension-fund-account-details/upload/${accountId}`), {
         method: 'POST',
         body: formData,
       });

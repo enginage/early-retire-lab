@@ -3,8 +3,10 @@ import CurrencyInput from '../../components/CurrencyInput';
 import RatioInput from '../../components/RatioInput';
 import Simulation from './Simulation';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1/early-retirement-initial-setting';
-const EXPENSE_API_BASE_URL = 'http://localhost:8000/api/v1/expenses';
+import { getApiUrl, API_ENDPOINTS } from '../../utils/api';
+
+const API_BASE_URL = getApiUrl(API_ENDPOINTS.EARLY_RETIREMENT_INITIAL_SETTING);
+const EXPENSE_API_BASE_URL = getApiUrl(API_ENDPOINTS.EXPENSES);
 
 const DIVIDEND_OPTIONS = [
   { value: 'medium', label: '중배당', rate: 5 },

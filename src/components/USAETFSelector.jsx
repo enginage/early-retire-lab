@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { getApiUrl, API_ENDPOINTS } from '../utils/api';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1/usa-etfs';
+const API_BASE_URL = getApiUrl(API_ENDPOINTS.USA_ETFS);
 
 // 모듈 레벨 캐시: 앱 전체에서 공유되는 미국ETF 목록 캐시
 let usaEtfCache = null;
@@ -168,8 +169,8 @@ export const ensureUSAETFCache = async () => {
 
   try {
     isLoadingUsaEtfCache = true;
-    const API_BASE_URL = 'http://localhost:8000/api/v1/usa-etfs';
-    usaEtfCachePromise = fetch(`${API_BASE_URL}?skip=0&limit=10000`, {
+    const apiUrl = getApiUrl(API_ENDPOINTS.USA_ETFS);
+    usaEtfCachePromise = fetch(`${apiUrl}?skip=0&limit=10000`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

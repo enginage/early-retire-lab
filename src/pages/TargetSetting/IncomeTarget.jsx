@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1/income-targets';
-const EXPENSE_API_BASE_URL = 'http://localhost:8000/api/v1/expenses';
+import { getApiUrl, API_ENDPOINTS } from '../../utils/api';
+
+const API_BASE_URL = getApiUrl(API_ENDPOINTS.INCOME_TARGETS);
+const EXPENSE_API_BASE_URL = getApiUrl(API_ENDPOINTS.EXPENSES);
 
 function IncomeTarget() {
   const [stockSaleIncomes, setStockSaleIncomes] = useState([]);

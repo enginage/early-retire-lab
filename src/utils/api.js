@@ -46,6 +46,9 @@ export const API_ENDPOINTS = {
   // Expenses
   EXPENSES: '/api/v1/expenses',
   
+  // Income Targets
+  INCOME_TARGETS: '/api/v1/income-targets',
+  
   // Experience Lab
   EXPERIENCE_LAB_STOCKS: '/api/v1/experience-lab-stocks',
 };

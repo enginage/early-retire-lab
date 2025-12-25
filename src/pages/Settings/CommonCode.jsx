@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import DataGrid from '../../components/DataGrid';
 
-const MASTER_API_BASE_URL = 'http://localhost:8000/api/v1/common-code-masters';
-const DETAIL_API_BASE_URL = 'http://localhost:8000/api/v1/common-code-details';
+import { getApiUrl, API_ENDPOINTS } from '../../utils/api';
+
+const MASTER_API_BASE_URL = getApiUrl(API_ENDPOINTS.COMMON_CODE_MASTERS);
+const DETAIL_API_BASE_URL = getApiUrl(API_ENDPOINTS.COMMON_CODE_DETAILS);
 
 function CommonCode() {
   const [masters, setMasters] = useState([]);
