@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { getApiUrl, API_ENDPOINTS } from '../utils/api';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1/financial-institutions';
+const API_BASE_URL = getApiUrl(API_ENDPOINTS.FINANCIAL_INSTITUTIONS);
 
 function FinancialInstitutionSelector({ isOpen, onClose, onSelect }) {
   const [institutions, setInstitutions] = useState([]);
