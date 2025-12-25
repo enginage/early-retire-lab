@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://enginage.github.io/early-retire-lab",
+  "homepage": "https://enginage.github.io/early-retire-lab-frontend",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -13,8 +13,10 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.89.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.10.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.55",

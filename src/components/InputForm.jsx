@@ -1,4 +1,5 @@
 import React from 'react';
+import RatioInput from './RatioInput';
 
 const InputField = ({ label, name, value, onChange, type = "number", suffix, isCurrency = false }) => {
     const handleChange = (e) => {
@@ -75,12 +76,15 @@ export default function InputForm({ inputs, handleChange }) {
                     suffix="원"
                     isCurrency={true}
                 />
-                <InputField
+                <RatioInput
                     label="기존 자산 목표 수익률"
                     name="targetReturnRate"
                     value={inputs.targetReturnRate}
                     onChange={handleChange}
                     suffix="%"
+                    min={0}
+                    max={100}
+                    step={1}
                 />
                 <InputField
                     label="매년 추가 투자금"
@@ -90,19 +94,25 @@ export default function InputForm({ inputs, handleChange }) {
                     suffix="원"
                     isCurrency={true}
                 />
-                <InputField
+                <RatioInput
                     label="추가 투자금 목표 수익률"
                     name="additionalInvestmentReturnRate"
                     value={inputs.additionalInvestmentReturnRate}
                     onChange={handleChange}
                     suffix="%"
+                    min={0}
+                    max={100}
+                    step={1}
                 />
-                <InputField
+                <RatioInput
                     label="추가 투자금 인상률"
                     name="additionalInvestmentGrowthRate"
                     value={inputs.additionalInvestmentGrowthRate}
                     onChange={handleChange}
                     suffix="%"
+                    min={0}
+                    max={100}
+                    step={1}
                 />
                 <InputField
                     label="최종 목표 자산 (Closing Balance)"
