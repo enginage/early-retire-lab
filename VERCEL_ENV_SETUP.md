@@ -20,6 +20,20 @@
    - ✅ Preview  
    - ✅ Development
 
+   **Key**: `VITE_SUPABASE_URL` (인증 기능 사용 시)
+   **Value**: `https://your-project.supabase.co` (Supabase 프로젝트 URL)
+   **Environment**: 
+   - ✅ Production
+   - ✅ Preview  
+   - ✅ Development
+
+   **Key**: `VITE_SUPABASE_ANON_KEY` (인증 기능 사용 시)
+   **Value**: `your_supabase_anon_key` (Supabase Anon Key)
+   **Environment**: 
+   - ✅ Production
+   - ✅ Preview  
+   - ✅ Development
+
 ### 2. 재배포
 
 환경 변수를 추가한 후:
@@ -46,9 +60,20 @@ console.log('API_BASE_URL:', API_BASE_URL);
 필요시 백엔드 환경 변수에 `ALLOWED_ORIGINS`를 설정하여 특정 도메인만 허용할 수 있습니다:
 - `ALLOWED_ORIGINS=https://early-retire-lab.vercel.app,https://www.yourdomain.com`
 
+## Supabase 인증 설정 (선택사항)
+
+인증 기능을 사용하지 않는다면 Supabase 환경 변수는 설정하지 않아도 됩니다.
+경고 메시지는 개발 환경에서만 표시되며, 프로덕션에서는 표시되지 않습니다.
+
+인증 기능을 사용하려면:
+1. Supabase 프로젝트 생성: https://supabase.com
+2. Settings > API에서 URL과 Anon Key 확인
+3. 위의 환경 변수 설정 방법에 따라 추가
+
 ## 문제가 계속되면
 
 1. 환경 변수가 제대로 설정되었는지 확인
 2. 재배포 후 브라우저 캐시 클리어 (Ctrl+Shift+R)
 3. Vercel 빌드 로그에서 환경 변수 로드 확인
+4. 개발 환경에서만 경고가 표시되는지 확인 (프로덕션에서는 표시 안 됨)
 
