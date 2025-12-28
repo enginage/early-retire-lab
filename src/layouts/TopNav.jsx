@@ -94,32 +94,45 @@ const TopNav = () => {
   // 외부 클릭 시 드롭다운 닫기
   useEffect(() => {
     const handleClickOutside = (event) => {
-      const isOutside = Object.values(dropdownRefs.current).every(
-        (ref) => ref && !ref.contains(event.target)
-      );
-      if (isOutside) {
-        closeDropdown();
-      }
-
-      // 모바일 메뉴 외부 클릭 시 닫기
-      if (isMobileMenuOpen && mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
-        const hamburgerButton = document.querySelector('.mobile-menu-button');
-        if (hamburgerButton && !hamburgerButton.contains(event.target)) {
-          // Link 클릭은 제외 (네비게이션이 실행되도록)
-          const isLinkClick = event.target.closest('a');
-          if (!isLinkClick) {
+      // 모바일 메뉴가 열려있을 때
+      if (isMobileMenuOpen) {
+        // 클릭된 요소가 모바일 메뉴 내부인지 확인
+        const clickedElement = event.target;
+        const isInsideMobileMenu = mobileMenuRef.current && mobileMenuRef.current.contains(clickedElement);
+        
+        // 모바일 메뉴 내부의 Link 클릭은 무시 (네비게이션이 실행되도록)
+        if (isInsideMobileMenu) {
+          const clickedLink = clickedElement.closest('a');
+          if (clickedLink) {
+            return; // Link 클릭은 외부 클릭으로 처리하지 않음
+          }
+        }
+        
+        // 모바일 메뉴 외부 클릭 시 닫기
+        if (!isInsideMobileMenu) {
+          const hamburgerButton = document.querySelector('.mobile-menu-button');
+          if (hamburgerButton && !hamburgerButton.contains(clickedElement)) {
             closeMobileMenu();
           }
         }
       }
+
+      // 데스크톱 드롭다운 처리
+      const isOutside = Object.values(dropdownRefs.current).every(
+        (ref) => ref && !ref.contains(event.target)
+      );
+      if (isOutside && openDropdown) {
+        closeDropdown();
+      }
     };
 
     if (openDropdown || isMobileMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      // click 이벤트 사용 (mousedown/touchstart보다 나중에 발생)
+      document.addEventListener('click', handleClickOutside, true);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('click', handleClickOutside, true);
     };
   }, [openDropdown, isMobileMenuOpen]);
 
@@ -183,11 +196,10 @@ const TopNav = () => {
                   key={submenu.key}
                   to={submenu.path}
                   onClick={(e) => {
+                    // 이벤트 전파 중지
                     e.stopPropagation();
-                    // 네비게이션이 먼저 실행되도록 약간 지연
-                    setTimeout(() => {
-                      closeMobileMenu();
-                    }, 100);
+                    // 메뉴 닫기 (네비게이션은 Link가 자동으로 처리)
+                    closeMobileMenu();
                   }}
                   className={`block px-8 py-3 text-sm transition-colors ${
                     isSubmenuActive
@@ -210,22 +222,30 @@ const TopNav = () => {
       <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-3">
-            {/* 로고나 브랜드 영역 */}
+            {/* 로고/브랜드 영역 */}
+            <Link
+              to="/"
+              className="flex items-center space-x-2 text-wealth-gold hover:text-yellow-500 transition-colors"
+            >
+              <svg
+                className="w-8 h-8 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span className="text-lg font-bold hidden sm:inline whitespace-nowrap">조기은퇴연구소</span>
+            </Link>
           </div>
           
           {/* 데스크톱 네비게이션 */}
           <nav className="hidden md:flex items-center space-x-1">
-            {/* 홈 링크 */}
-            <Link
-              to="/"
-              className={`px-4 py-2 rounded-lg transition-colors text-sm font-medium ${
-                isActive('/')
-                  ? 'text-wealth-gold font-medium'
-                  : 'text-wealth-muted hover:text-wealth-gold'
-              }`}
-            >
-              소개
-            </Link>
 
             {/* 드롭다운 메뉴들 */}
             {menuItems.map((item) => {
@@ -370,18 +390,6 @@ const TopNav = () => {
           ref={mobileMenuRef}
           className="md:hidden absolute top-full left-0 right-0 bg-wealth-card border-b border-gray-800 shadow-xl max-h-[calc(100vh-73px)] overflow-y-auto"
         >
-          {/* 홈 링크 */}
-          <Link
-            to="/"
-            onClick={closeMobileMenu}
-            className={`block px-4 py-3 text-sm font-medium transition-colors border-b border-gray-700 ${
-              isActive('/')
-                ? 'bg-wealth-gold/20 text-wealth-gold'
-                : 'text-wealth-muted hover:bg-wealth-card/50 hover:text-white'
-            }`}
-          >
-            소개
-          </Link>
 
           {/* 메뉴 항목들 */}
           {menuItems.map((item) => {
@@ -399,7 +407,10 @@ const TopNav = () => {
                 <Link
                   key={item.key}
                   to={item.path}
-                  onClick={closeMobileMenu}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    closeMobileMenu();
+                  }}
                   className={`block px-4 py-3 text-sm font-medium transition-colors border-b border-gray-700 ${
                     isItemActive
                       ? 'bg-wealth-gold/20 text-wealth-gold'
@@ -427,7 +438,10 @@ const TopNav = () => {
             ) : (
               <Link
                 to="/login"
-                onClick={closeMobileMenu}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  closeMobileMenu();
+                }}
                 className={`block px-4 py-3 text-sm font-medium transition-colors ${
                   isActive('/login')
                     ? 'bg-wealth-gold/20 text-wealth-gold'
