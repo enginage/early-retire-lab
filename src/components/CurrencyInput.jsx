@@ -60,7 +60,7 @@ const CurrencyInput = ({
           required={required}
           className={`w-full px-4 py-3 bg-wealth-card border border-gray-700 rounded-lg text-white text-lg text-right placeholder:text-left focus:outline-none focus:ring-2 focus:ring-wealth-gold autofill:bg-wealth-card autofill:text-white ${
             readOnly ? 'bg-gray-800/50 cursor-not-allowed' : ''
-          } ${required && !value ? 'border-red-500' : ''} ${suffix ? 'pr-12' : 'pr-4'} ${className}`}
+          } ${disabled ? 'bg-gray-800/50 cursor-not-allowed text-gray-500' : ''} ${required && !value && !disabled ? 'border-red-500' : ''} ${suffix ? 'pr-12' : 'pr-4'} ${className}`}
           style={{
             WebkitBoxShadow: '0 0 0 1000px rgb(30, 41, 59) inset',
             WebkitTextFillColor: 'white',

@@ -3,13 +3,7 @@ import AppLayout from '../../layouts/AppLayout';
 
 function FreeLiving() {
   return (
-    <AppLayout
-      sideNavTitle="자유롭게살기"
-      sideNavMenus={[]}
-      activeMenu=""
-      onMenuClick={() => {}}
-      showSideNav={false}
-    >
+    <AppLayout>
       <div className="space-y-8">
         <div>
           <h1 className="text-3xl font-bold text-white mb-2">자유롭게살기</h1>

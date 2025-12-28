@@ -49,12 +49,7 @@ function FinancialStatus() {
   };
 
   return (
-    <AppLayout
-      sideNavTitle="재무상태"
-      sideNavMenus={MENUS}
-      activeMenu={activeMenu}
-      onMenuClick={handleMenuClick}
-    >
+    <AppLayout>
       {renderContent()}
     </AppLayout>
   );

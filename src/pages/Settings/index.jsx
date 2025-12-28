@@ -57,12 +57,7 @@ function Settings() {
   };
 
   return (
-    <AppLayout
-      sideNavTitle="환경설정"
-      sideNavMenus={MENUS}
-      activeMenu={activeMenu}
-      onMenuClick={handleMenuClick}
-    >
+    <AppLayout>
       {renderContent()}
     </AppLayout>
   );

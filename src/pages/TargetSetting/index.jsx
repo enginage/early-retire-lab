@@ -45,12 +45,7 @@ function TargetSetting() {
   };
 
   return (
-    <AppLayout
-      sideNavTitle="시드모으기"
-      sideNavMenus={MENUS}
-      activeMenu={activeMenu}
-      onMenuClick={handleMenuClick}
-    >
+    <AppLayout>
       {renderContent()}
     </AppLayout>
   );

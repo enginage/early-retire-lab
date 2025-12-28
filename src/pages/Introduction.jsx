@@ -4,7 +4,7 @@ import AppLayout from '../layouts/AppLayout';
 
 function Introduction() {
   return (
-    <AppLayout showSideNav={false}>
+    <AppLayout>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20">
         {/* Hero Section */}
         <div className="text-center mb-16">

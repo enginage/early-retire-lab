@@ -55,8 +55,8 @@ function EarlyRetirementSimulation() {
   useEffect(() => {
     // 은퇴예상나이가 현재 나이보다 크면 현재수입(월) 필수
     const isRetirementAgeGreater = retirementAge > currentAge;
-    const hasRequiredFields = investableAssets && monthlyExpenses && (!isRetirementAgeGreater || monthlyIncome);
-    
+    const hasRequiredFields = investableAssets && monthlyExpenses && (!isRetirementAgeGreater || (monthlyIncome && monthlyIncome > 0));
+
     if (hasRequiredFields) {
       calculateResults();
     } else {
@@ -78,7 +78,11 @@ function EarlyRetirementSimulation() {
     }
     
     // 추가투입자산 = 현재월수입 - 지출평균(월)
-    const monthlyAdditionalInvestmentAmount = Math.max(0, monthlyIncomeAmount - monthlyExpenseAmount);
+    // 단, 현재 나이와 은퇴예상나이가 같으면 추가투입자산은 0
+    const yearsUntilRetirement = Math.max(0, retirementAge - currentAge);
+    const monthlyAdditionalInvestmentAmount = yearsUntilRetirement > 0 
+      ? Math.max(0, monthlyIncomeAmount - monthlyExpenseAmount)
+      : 0;
     
     if (currentAsset === 0 || yearlyExpense === 0) {
       setResults(null);
@@ -87,10 +91,10 @@ function EarlyRetirementSimulation() {
 
     // 1. 투자 없이 자산만 소진하는 경우
     // 은퇴예상나이까지는 수입이 있고, 이후에는 수입 없이 지출만 있음
-    const yearsUntilRetirement = Math.max(0, retirementAge - currentAge);
-    const monthlySavings = monthlyIncomeAmount - monthlyExpenseAmount; // 월 순 저축
+    // 현재 나이와 은퇴예상나이가 같으면 추가투입자산은 0
+    const monthlySavings = yearsUntilRetirement > 0 ? monthlyIncomeAmount - monthlyExpenseAmount : 0; // 월 순 저축 (은퇴예상나이와 현재 나이가 같으면 0)
     const yearlySavings = monthlySavings * 12; // 연 순 저축
-    
+
     // 은퇴예상나이 시점의 자산 = 현재자산 + (은퇴예상나이까지의 순 저축)
     const assetAtRetirement = currentAsset + (yearlySavings * yearsUntilRetirement);
     
@@ -100,10 +104,10 @@ function EarlyRetirementSimulation() {
     if (assetAtRetirement > 0 && yearlyExpense > 0) {
       yearsAfterRetirementUntilDepletion = assetAtRetirement / yearlyExpense;
     }
-    
+
     // 자산 고갈 시점 = 은퇴예상나이 + (은퇴예상나이부터 고갈까지의 기간)
     const depletionAge = retirementAge + yearsAfterRetirementUntilDepletion;
-    
+
     // 기대수명까지 필요한 추가 근로 기간
     const yearsNeedWork = Math.max(0, expectedLifespan - depletionAge);
     const totalWorkNeeded = yearsNeedWork * yearlyExpense;
@@ -316,18 +320,6 @@ function EarlyRetirementSimulation() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-wealth-muted mb-2">기대수명</label>
-            <input
-              type="number"
-              value={expectedLifespan}
-              onChange={(e) => setExpectedLifespan(Number(e.target.value))}
-              className="w-full bg-wealth-card border border-gray-700 rounded-lg px-4 py-3 text-white text-lg focus:outline-none focus:ring-2 focus:ring-wealth-gold"
-              min="1"
-              max="120"
-            />
-          </div>
-
-          <div>
             <label className="block text-sm font-medium text-wealth-muted mb-2">은퇴예상나이</label>
             <input
               type="number"
@@ -351,6 +343,19 @@ function EarlyRetirementSimulation() {
               max="120"
             />
           </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-wealth-muted mb-2">기대수명</label>
+            <input
+              type="number"
+              value={expectedLifespan}
+              onChange={(e) => setExpectedLifespan(Number(e.target.value))}
+              className="w-full bg-wealth-card border border-gray-700 rounded-lg px-4 py-3 text-white text-lg focus:outline-none focus:ring-2 focus:ring-wealth-gold"
+              min="1"
+              max="120"
+            />
+          </div>
+
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -362,6 +367,7 @@ function EarlyRetirementSimulation() {
             placeholder="현재자산을 입력하세요"
             suffix="원"
             showHelperText={false}
+            required={true}
           />
           <CurrencyInput
             label="지출평균(월)"
@@ -371,6 +377,7 @@ function EarlyRetirementSimulation() {
             placeholder="월 지출액을 입력하세요"
             suffix="원"
             showHelperText={false}
+            required={true}
           />
           <CurrencyInput
             label="현재수입(월)"
@@ -381,6 +388,7 @@ function EarlyRetirementSimulation() {
             suffix="원"
             showHelperText={false}
             required={retirementAge > currentAge}
+            disabled={retirementAge <= currentAge}
           />
         </div>
       </div>
@@ -539,7 +547,7 @@ function EarlyRetirementSimulation() {
               </div>
 
               <div className="bg-wealth-card/50 rounded-xl p-6 border border-gray-700">
-                <p className="text-wealth-muted mb-2">근로 단축 효과</p>
+                <p className="text-wealth-muted mb-2">은퇴 예상 보다</p>
                 <p className="text-5xl font-bold text-emerald-400 mb-2">
                   {results.yearsSaved}년
                 </p>
@@ -568,7 +576,7 @@ function EarlyRetirementSimulation() {
             {/* 비교 요약 */}
             <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl p-6 text-center mb-6">
               <p className="text-white text-xl font-bold mb-2">
-                투자 없이 일만 하면: {results.yearsSaved}년을 더 일 해야 함, 자녀에게 남길 자산 없음.
+                투자 없이 일만 하면: {(parseFloat(results.yearsSaved) + parseFloat(results.yearsNeedWork)).toFixed(1)}년을 더 일 해야 함, 자녀에게 남길 자산 없음.
               </p>
               <p className="text-white text-xl font-bold mb-2">
                 조기은퇴 시스템 활용 시: {results.signalGoalAge}세에 완전한 경제적 자유, 자녀에게 남길 자산 {formatCurrency(results.requiredAsset)}원 🎉

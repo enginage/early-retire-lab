@@ -5,10 +5,10 @@ import EarlyRetirementSimulation from './EarlyRetirementSimulation';
 
 const MENUS = [
   { key: 'early-retirement', label: '조기은퇴 시뮬레이션' },
-  { key: 'us-dividend', label: '미장 월 배당' },
-  { key: 'kr-dividend', label: '국장 월 배당' },
-  { key: 'us-trading-signal', label: '미장 매매 시그널' },
-  { key: 'kr-trading-signal', label: '국장 매매 시그널' },
+  // { key: 'us-dividend', label: '미장 월 배당' },
+  // { key: 'kr-dividend', label: '국장 월 배당' },
+  // { key: 'us-trading-signal', label: '미장 매매 시그널' },
+  // { key: 'kr-trading-signal', label: '국장 ETF 가이드' },
 ];
 
 function ExperienceLab() {
@@ -49,12 +49,7 @@ function ExperienceLab() {
   };
 
   return (
-    <AppLayout
-      sideNavTitle="체험실"
-      sideNavMenus={MENUS}
-      activeMenu={activeMenu}
-      onMenuClick={handleMenuClick}
-    >
+    <AppLayout>
       {renderContent()}
     </AppLayout>
   );
