@@ -102,10 +102,14 @@ const TopNav = () => {
       }
 
       // 모바일 메뉴 외부 클릭 시 닫기
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+      if (isMobileMenuOpen && mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
         const hamburgerButton = document.querySelector('.mobile-menu-button');
         if (hamburgerButton && !hamburgerButton.contains(event.target)) {
-          closeMobileMenu();
+          // Link 클릭은 제외 (네비게이션이 실행되도록)
+          const isLinkClick = event.target.closest('a');
+          if (!isLinkClick) {
+            closeMobileMenu();
+          }
         }
       }
     };
@@ -178,7 +182,13 @@ const TopNav = () => {
                 <Link
                   key={submenu.key}
                   to={submenu.path}
-                  onClick={closeMobileMenu}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // 네비게이션이 먼저 실행되도록 약간 지연
+                    setTimeout(() => {
+                      closeMobileMenu();
+                    }, 100);
+                  }}
                   className={`block px-8 py-3 text-sm transition-colors ${
                     isSubmenuActive
                       ? 'bg-wealth-gold/20 text-wealth-gold font-medium'
